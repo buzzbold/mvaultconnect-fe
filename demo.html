@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Demo Implementation of Form Provisioning Javascript</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -16,19 +17,44 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
+
+<script>
+var context = {
+    callsign : "KQED",
+    provisioningEndpoint : "https://full-kqed-sandbox.cs2.force.com/donate/services/apexrest/v1.0/provision/",
+    passportEnabled : true,
+    overlayEnabled : true,
+    supportUrl: "http://support.pbs.org",
+    supportPhone: "+1 415-942-8804",
+    accentRgb: "",
+    logoUrl: "https://full-kqed-sandbox.cs2.force.com/donate/resource/1470600684000/KQED_PassportLogo"
+}
+
+</script>
+
+
+      <script type="text/javascript">
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+  analytics.load("Cr6zEkwN5l9cRB10Uuq0m5BlFcAuoV6a");
+  analytics.page()
+  analytics.group(context.callsign);
+  }}();
+</script>
   </head>
   <body>
+  <div class="container">
     <h1>Demo Implementation of Form Provisioning Javascript</h1>
 
 
-    <h2>A test object</h2>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">A test object</h3>
+  </div>
+  <div class="panel-body">
+<pre>
     <code>
-        <pre>
-
-
             var testObj = {
-
-            __action:, "rc_connect.Campaign_DesignForm.upsertData",
+            __action: "rc_connect.Campaign_DesignForm.upsertData",
             __campaign:"701R0000000LUTv",
             __form:"00PR0000006fFyrMAE",
             __mode:"view",
@@ -71,25 +97,117 @@
         };
 
 
-    </pre>
-</code>
+</code> </pre>
 
+
+<form class="form-inline"  id="testRecords">
+
+    <div class="form-group">
+    <label for="email" class="sr-only">Email</label>
+    <input type="email" class="form-control" id="email" value="fake@fake.com">
+  </div>
+  <div class="form-group">
+    <label for="transactionid" class="sr-only">Password</label>
+    <input type="text" class="form-control" id="transactionid" value="82918572218942461" >
+  </div>
+  <button type="submit" class="btn btn-primary" onclick="doTest();return false;">Test This Object</button>
+</form>
+
+
+
+  </div>
+</div>
+
+
+
+
+</div>
 
 <script>
 
-$( document ).ready( function() {
-    var testImplObject = new MVCFE.eventData(testObj);
+   var testObj = {
 
-});
+            __action: "rc_connect.Campaign_DesignForm.upsertData",
+            __campaign:"701R0000000LUTv",
+            __form:"00PR0000006fFyrMAE",
+            __mode:"view",
+            rc_connect__address_city__c:"San Francisco",
+            rc_connect__address_country__c:"US",
+            rc_connect__address_postal_code__c:"12345",
+            rc_connect__address_state__c:"CA",
+            rc_connect__address_street_line_1__c:"1234 Count Street",
+            rc_connect__address_street_line_2__c:"",
+            rc_connect__batch_upload_campaign_matched__c:"701R0000000LUTv",
+            rc_connect__contact_1_email__c:"fake@fake.com",
+            rc_connect__contact_1_first_name__c:"Test",
+            rc_connect__contact_1_last_name__c:"MasterCard",
+            rc_connect__event_purchase_giving_amount__c:"",
+            rc_connect__event_purchase_giving_paid__c:"false",
+            rc_connect__exclude_giving__c:"false",
+            rc_connect__giving_close_date__c:"2016-08-04",
+            rc_connect__giving_close_date_time__c:"2016-08-04 18:41:02",
+            rc_connect__giving_giving_amount__c:"5",
+            rc_connect__giving_giving_frequency__c:"Monthly",
+            rc_connect__giving_is_sustainer__c:"true",
+            rc_connect__giving_paid__c:"true",
+            rc_connect__giving_record_type__c:"Donation",
+            rc_connect__giving_response_code__c:"000",
+            rc_connect__giving_response_message__c:"Approved",
+            rc_connect__giving_transaction_id__c:"82918572218942461",
+            rc_connect__giving_transaction_type__c:"Payment",
+            rc_connect__merchant_name__c:"KQEDVANTIVTEST",
+            rc_connect__payment_method_card_expiration_month__c:"12",
+            rc_connect__payment_method_card_expiration_year__c:"2023",
+            rc_connect__payment_method_card_guid__c:"",
+            rc_connect__payment_method_card_holder_name__c:"Test MasterCard",
+            rc_connect__payment_method_card_issuer__c:"visa",
+            rc_connect__payment_method_card_last_four_digits__c:"0002",
+            rc_connect__payment_method_card_number__c:"4100 2003 1000 0002",
+            rc_connect__payment_method_card_security_code__c:"123",
+            rc_connect__payment_method_payment_type__c:"Charge Card",
+            rc_connect__payment_processor__c:"Litle",
+            rc_connect__process_events__c:"false"
+        };
+
+
+var testImplObject;
+
+
+
+function doTest(f) {
+
+console.log(f);
+
+var e = $("#email").val();
+var t = $("#transactionid").val();
+
+if (typeof e!== undefined && e!='') testObj.rc_connect__contact_1_email__c = e;
+if (typeof t!== undefined && t!='') testObj.rc_connect__giving_transaction_id__c = t;
+console.log(testObj);
+
+try {
+    testImplObject = new MVCFE.Event(testObj);
+}
+catch (e) {
+    context.error = e;
+} finally {
+    console.log(context);
+    analytics.track(context.callsign +  'Provisioning Initialized', context);
+
+};
+
+
+
+}
+
+
 
 
 </script>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script  src="https://buzzbold.github.io/mvaultconnect-fe/provision.js"  ></script>
+<script  src="./provision.js"  ></script>
 
 </body>
 </html>
