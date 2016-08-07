@@ -25,15 +25,25 @@ try {
     this.evaluateResult();
     this.showDialog();
     context.event = ev;
-} catch (e) {
     context.result = this;
+    console.log(this.response);
+    if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
+      console.log
+ analytics.track(context.callsign +  ' Provisioning Failed', context);
+
+    }
+
+} catch (e) {
+
     context.error = e;
    analytics.track(context.callsign +  ' Provisioning Error', context);
+
 } finally {
-    context.result = this;
+
     analytics.track(context.callsign +  ' Provisioning Complete', context);
+
 }
-console.log(this);
+//console.log(this);
 
 }
 
@@ -47,7 +57,7 @@ MVCFE.Event.prototype.evaluateType = function() {
     } catch (e) {
         console.log('Exception' + e);
     }
-    console.log(this);
+   //console.log(this);
 };
 
 

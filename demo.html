@@ -192,6 +192,7 @@ catch (e) {
     context.error = e;
 } finally {
     console.log(context);
+
     analytics.track(context.callsign +  'Provisioning Initialized', context);
 
 };
