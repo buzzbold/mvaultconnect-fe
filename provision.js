@@ -63,7 +63,7 @@ MVCFE.Event.prototype.evaluateType = function() {
     this.typeName = "unknown";
     try {
         if (typeof this.callbackData !== undefined
-            && this.callbackData.__action == 'rc_connect.Campaign_DesignForm.upsertData')
+            && this.callbackData.__action == 'rC_Connect.Campaign_DesignForm.upsertData')
             this.typeName = "rc_connect";
     } catch (e) {
         console.log('Exception' + e);
