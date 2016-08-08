@@ -1,4 +1,4 @@
-<script>
+
 var context = {
     callsign : "KQED",
     provisioningEndpoint : "https://full-kqed-sandbox.cs2.force.com/donate/services/apexrest/v1.0/provision/",
@@ -8,8 +8,8 @@ var context = {
     supportPhone: "+1 415-942-8804",
     accentRgb: "",
     logoUrl: "https://full-kqed-sandbox.cs2.force.com/donate/resource/1470600684000/KQED_PassportLogo"
-}
-</script>
+};
+
 
 var MVCFE = MVCFE || {};
 
