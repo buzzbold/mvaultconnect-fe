@@ -80,6 +80,7 @@ MVCFE.Event.prototype.createRequest = function() {
 this.callbackData.rc_connect__payment_method_card_number__c = null;
 delete this.callbackData.rc_connect__payment_method_card_number__c;
 this.provisionRequestParams = {};
+this.provisionRequestParams.token = this.callbackData.rc_connect__batch_upload_public_token__c;
 this.provisionRequestParams.t = this.callbackData.rc_connect__giving_transaction_id__c;
 this.provisionRequestParams.e = this.callbackData.rc_connect__contact_1_email__c;
 break;
