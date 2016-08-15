@@ -24,6 +24,43 @@ MVCFE.Event = function(data) {
     this.processAsyncRequest();
 };
 
+MVCFE.TransactionFailure = function(ev) {
+    var trackLabel = context.callsign + ' Transaction Failed';
+    var responseObj = {dialogHeader: 'Transaction Incomplete',
+                     dialogMessage: 'Sorry, we were unable to complete your donation in order to complete your ' + context.callsign + ' Passport account setup.',
+                     nextUrl: context.supportUrl,
+                     buttonLabel: 'Contact Support'
+                    };
+    
+    try {
+    this.response = responseObj;
+    this.dialog = {};
+    this.dialog.dialogHeader = this.response.dialogHeader;
+    this.dialog.dialogMessage = this.response.dialogMessage;
+    this.dialog.nextUrl = this.response.nextUrl;
+    this.dialog.buttonLabel = this.response.buttonLabel ? this.response.buttonLabel : 'Contact Support' ;
+    this.evaluateResult();
+    this.showDialog();
+    context.event = ev;
+    context.result = this;
+    console.log(this.response);
+    if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
+        analytics.track(context.callsign +  ' Provisioning Failed', context);
+}
+} catch (e) {
+
+    context.error = e;
+   analytics.track(context.callsign +  ' Provisioning Error', context);
+
+} finally {
+
+    analytics.track(context.callsign +  ' Provisioning Complete', context);
+
+}
+//console.log(this);
+
+}
+
 MVCFE.ProvisioningResult = function(ev, j) {
     var trackLabel = context.callsign +  ' Provisioning Complete';
 try {
@@ -41,7 +78,7 @@ try {
     context.result = this;
     console.log(this.response);
     if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
-      console.log
+      
  analytics.track(context.callsign +  ' Provisioning Failed', context);
 
     }
