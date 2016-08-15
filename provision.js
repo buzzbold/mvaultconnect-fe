@@ -14,6 +14,8 @@ var context = {
 var MVCFE = MVCFE || {};
 
 MVCFE.Event = function(data) {
+    console.log('Incoming Data:');
+    console.log(data);
     this.callbackData = data;
     this.readyDomDialog();
     this.setupEnv();
