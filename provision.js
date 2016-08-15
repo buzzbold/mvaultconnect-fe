@@ -16,9 +16,12 @@ var MVCFE = MVCFE || {};
 MVCFE.Event = function(data) {
     console.log('Incoming Data:');
     console.log(data);
+    
     this.callbackData = data;
+    
+    this.setupEnv();    
     this.readyDomDialog();
-    this.setupEnv();
+
     this.evaluateType();
     this.createRequest();
     this.processAsyncRequest();
@@ -42,7 +45,8 @@ MVCFE.Event.prototype.evaluateType = function() {
 
 
 MVCFE.Event.prototype.createRequest = function() {
-
+     console.log('Method scope info, createRequest:');
+    console.log(this);
     switch(this.typeName) {
         case 'rc_connect':
 // We don't want this.
@@ -59,20 +63,6 @@ break; */
 default:
 context.error = 'unknown provisioning event';
 }
-};
-
-MVCFE.Event.prototype.setupEnv = function() {
-
-    if (typeof jquery === 'function') {} else {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
-    }
-    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
-        $.getScript("//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
-    }
 };
 
 MVCFE.Event.prototype.processAsyncRequest = function() {
@@ -93,6 +83,21 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
         });
     }
 };
+
+MVCFE.Event.prototype.setupEnv = function() {
+
+    if (typeof jquery === 'function') {} else {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
+    }
+    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
+        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
+    }
+};
+
 
 MVCFE.Event.prototype.readyDomDialog = function() {
   this.overlay =  document.createElement("div");
