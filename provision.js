@@ -24,42 +24,91 @@ MVCFE.Event = function(data) {
     this.processAsyncRequest();
 };
 
-MVCFE.TransactionFailure = function(ev) {
-    var trackLabel = context.callsign + ' Transaction Failed';
-    var responseObj = {dialogHeader: 'Transaction Incomplete',
-                     dialogMessage: 'Sorry, we were unable to complete your donation in order to complete your ' + context.callsign + ' Passport account setup.',
-                     nextUrl: context.supportUrl,
-                     buttonLabel: 'Contact Support'
-                    };
+MVCFE.Event.prototype.evaluateType = function() {
+    this.typeName = "unknown";
+    
+        console.log('Method scope info, evaluateType:');
+    console.log(this);
     
     try {
-    this.response = responseObj;
-    this.dialog = {};
-    this.dialog.dialogHeader = this.response.dialogHeader;
-    this.dialog.dialogMessage = this.response.dialogMessage;
-    this.dialog.nextUrl = this.response.nextUrl;
-    this.dialog.buttonLabel = this.response.buttonLabel ? this.response.buttonLabel : 'Contact Support' ;
-    this.evaluateResult();
-    this.showDialog();
-    context.event = ev;
-    context.result = this;
-    console.log(this.response);
-    if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
-        analytics.track(context.callsign +  ' Provisioning Failed', context);
+        if (typeof this.callbackData !== undefined
+            && this.callbackData.__action == 'rC_Connect.Campaign_DesignForm.upsertData')
+            this.typeName = "rc_connect";
+    } catch (e) {
+        console.log('Exception' + e);
+    }
+   //console.log(this);
+};
+
+
+MVCFE.Event.prototype.createRequest = function() {
+
+    switch(this.typeName) {
+        case 'rc_connect':
+// We don't want this.
+this.callbackData.rc_connect__payment_method_card_number__c = null;
+delete this.callbackData.rc_connect__payment_method_card_number__c;
+this.provisionRequestParams = {};
+this.provisionRequestParams.token = this.callbackData.rc_connect__batch_upload_public_token__c;
+this.provisionRequestParams.t = this.callbackData.rc_connect__giving_transaction_id__c;
+this.provisionRequestParams.e = this.callbackData.rc_connect__contact_1_email__c;
+break;
+/* case n:
+code block
+break; */
+default:
+context.error = 'unknown provisioning event';
 }
-} catch (e) {
+};
 
-    context.error = e;
-   analytics.track(context.callsign +  ' Provisioning Error', context);
+MVCFE.Event.prototype.setupEnv = function() {
 
-} finally {
+    if (typeof jquery === 'function') {} else {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
+    }
+    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
+        $.getScript("//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
+    }
+};
 
-    analytics.track(context.callsign +  ' Provisioning Complete', context);
+MVCFE.Event.prototype.processAsyncRequest = function() {
+    var passEvent = this;
+    if (true === context.passportEnabled ) {
 
-}
-//console.log(this);
+        $.ajax({
+            url: context.provisioningEndpoint,
+            data: this.provisionRequestParams,
+            method: "GET",
+        })
+        .done(function(json) {
+            myResult = new MVCFE.ProvisioningResult(passEvent, json);
+        })
+        .fail(function(e) {
+            context.error = e;
+            myResult = new MVCFE.ProvisioningResult(this);
+        });
+    }
+};
 
-}
+MVCFE.Event.prototype.readyDomDialog = function() {
+  this.overlay =  document.createElement("div");
+  $(this.overlay).attr("id", "passport-loading");
+  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.4);');
+
+  $(this.overlay).detach();
+  $("body").prepend(this.overlay);
+  $("html, body").animate({
+    scrollTop: 0
+}, 600);
+  this.overlay.style.visibility = "visible";
+};
+
+/* ProvisioningResult is the recipient of the originating
+Event data and related AJAX response data */
 
 MVCFE.ProvisioningResult = function(ev, j) {
     var trackLabel = context.callsign +  ' Provisioning Complete';
@@ -96,91 +145,6 @@ try {
 //console.log(this);
 
 }
-
-
-MVCFE.Event.prototype.evaluateType = function() {
-    this.typeName = "unknown";
-    try {
-        if (typeof this.callbackData !== undefined
-            && this.callbackData.__action == 'rC_Connect.Campaign_DesignForm.upsertData')
-            this.typeName = "rc_connect";
-    } catch (e) {
-        console.log('Exception' + e);
-    }
-   //console.log(this);
-};
-
-
-MVCFE.Event.prototype.createRequest = function() {
-
-    switch(this.typeName) {
-        case 'rc_connect':
-// We don't want this.
-this.callbackData.rc_connect__payment_method_card_number__c = null;
-delete this.callbackData.rc_connect__payment_method_card_number__c;
-this.provisionRequestParams = {};
-this.provisionRequestParams.token = this.callbackData.rc_connect__batch_upload_public_token__c;
-this.provisionRequestParams.t = this.callbackData.rc_connect__giving_transaction_id__c;
-this.provisionRequestParams.e = this.callbackData.rc_connect__contact_1_email__c;
-break;
-/* case n:
-code block
-break; */
-default:
-context.error = 'unknown provisioning event';
-}
-};
-
-
-
-MVCFE.Event.prototype.setupEnv = function() {
-
-    if (typeof jquery === 'function') {} else {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
-    }
-    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
-        $.getScript("//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
-    }
-};
-
-
-MVCFE.Event.prototype.processAsyncRequest = function() {
-    var passEvent = this;
-    if (true === context.passportEnabled ) {
-
-        $.ajax({
-            url: context.provisioningEndpoint,
-            data: this.provisionRequestParams,
-            method: "GET",
-        })
-        .done(function(json) {
-            myResult = new MVCFE.ProvisioningResult(passEvent, json);
-        })
-        .fail(function(e) {
-            context.error = e;
-            myResult = new MVCFE.ProvisioningResult(this);
-        });
-    }
-};
-
-MVCFE.Event.prototype.readyDomDialog = function() {
-  this.overlay =  document.createElement("div");
-  $(this.overlay).attr("id", "passport-loading");
-  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.4);');
-
-  $(this.overlay).detach();
-  $("body").prepend(this.overlay);
-  $("html, body").animate({
-    scrollTop: 0
-}, 600);
-  this.overlay.style.visibility = "visible";
-
-};
-
 
 MVCFE.ProvisioningResult.prototype.evaluateResult = function() {
     if (typeof this.response === undefined ) {
@@ -228,6 +192,43 @@ MVCFE.ProvisioningResult.prototype.evaluateResult = function() {
 
        };
 
+
+MVCFE.TransactionFailure = function(ev) {
+    var trackLabel = context.callsign + ' Transaction Failed';
+    var responseObj = {dialogHeader: 'Transaction Incomplete',
+                     dialogMessage: 'Sorry, we were unable to complete your donation in order to complete your ' + context.callsign + ' Passport account setup.',
+                     nextUrl: context.supportUrl,
+                     buttonLabel: 'Contact Support'
+                    };
+    
+    try {
+    this.response = responseObj;
+    this.dialog = {};
+    this.dialog.dialogHeader = this.response.dialogHeader;
+    this.dialog.dialogMessage = this.response.dialogMessage;
+    this.dialog.nextUrl = this.response.nextUrl;
+    this.dialog.buttonLabel = this.response.buttonLabel ? this.response.buttonLabel : 'Contact Support' ;
+    this.evaluateResult();
+    this.showDialog();
+    context.event = ev;
+    context.result = this;
+    console.log(this.response);
+    if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
+        analytics.track(context.callsign +  ' Provisioning Failed', context);
+}
+} catch (e) {
+
+    context.error = e;
+   analytics.track(context.callsign +  ' Provisioning Error', context);
+
+} finally {
+
+    analytics.track(context.callsign +  ' Provisioning Complete', context);
+
+}
+//console.log(this);
+
+}
 
 
        function winHasJSON(obj) {
