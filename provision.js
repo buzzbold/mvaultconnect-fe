@@ -40,7 +40,7 @@ MVCFE.Event.prototype.evaluateType = function() {
     } catch (e) {
         console.log('Exception' + e);
     }
-   //console.log(this);
+  
 };
 
 
@@ -49,7 +49,7 @@ MVCFE.Event.prototype.createRequest = function() {
     console.log(this);
     switch(this.typeName) {
         case 'rc_connect':
-// We don't want this.
+// Overwrite and delete the CC number immediately
 this.callbackData.rc_connect__payment_method_card_number__c = null;
 delete this.callbackData.rc_connect__payment_method_card_number__c;
 this.provisionRequestParams = {};
@@ -57,9 +57,7 @@ this.provisionRequestParams.token = this.callbackData.rc_connect__batch_upload_p
 this.provisionRequestParams.t = this.callbackData.rc_connect__giving_transaction_id__c;
 this.provisionRequestParams.e = this.callbackData.rc_connect__contact_1_email__c;
 break;
-/* case n:
-code block
-break; */
+
 default:
 context.error = 'unknown provisioning event';
 }
@@ -78,8 +76,8 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
             myResult = new MVCFE.ProvisioningResult(passEvent, json);
         })
         .fail(function(e, textStatus) {
-            context.error = testStatus;
-            myResult = new MVCFE.ProvisioningResult(this);
+            context.error = e;
+            myResult = new MVCFE.ProvisioningResult(this, textStatus);
         });
     }
 };
