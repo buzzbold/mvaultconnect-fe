@@ -159,6 +159,7 @@ try {
 
 MVCFE.ProvisioningResult.prototype.evaluateResult = function() {
     if (typeof this.response === undefined ) {
+        this.dialog = {};
        this.dialog.push({
         dialogHeader: "There was a problem completing your request",
         dialogMessage:  "Sorry, there was a problem creating your account. Please contact our support department.<br/> " + context.supportPhone,
