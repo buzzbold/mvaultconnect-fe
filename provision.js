@@ -183,7 +183,7 @@ this.showDialog();
            .css('z-index',1000);
 
            this.overlayContent   = document.createElement("div");
-           $(this.overlayContent).html("<div><img src='" + context.logoUrl + "' style='max-width:100%; height:auto' /><h3> " + this.dialog.dialogHeader + " </h3><p> " + this.dialog.dialogMessage + " </p> <a style='background:" + context.accentColor + "' class='btn btn-primary' href='" + this.dialog.nextUrl + "' target='_blank'  >" + this.dialog.buttonLabel + "</a></div>");
+           $(this.overlayContent).html("<div><img src='" + context.logoUrl + "' style='max-width:100%; height:auto' /><h3> " + this.dialog.dialogHeader + " </h3><p> " + this.dialog.dialogMessage + " </p> <a style='background:" + context.accentColor + "; border-color:" + context.accentColor + "' class='btn btn-primary btn-lg' href='" + this.dialog.nextUrl + "' target='_blank'  >" + this.dialog.buttonLabel + "</a></div>");
             $(this.overlayContent)
             .css('display','block')
            .css('position','relative')
