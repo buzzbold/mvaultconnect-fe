@@ -77,8 +77,8 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
         })
         .fail(function(e) {
             context.error = e;
-            var 
-            myResult = new MVCFE.ProvisioningResult(this, );
+            var na;
+            myResult = new MVCFE.ProvisioningResult(this, na );
         });
     }
 };
