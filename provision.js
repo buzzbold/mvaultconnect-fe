@@ -77,7 +77,8 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
         })
         .fail(function(e) {
             context.error = e;
-            myResult = new MVCFE.ProvisioningResult(this, NULL);
+            var 
+            myResult = new MVCFE.ProvisioningResult(this, );
         });
     }
 };
@@ -125,7 +126,7 @@ try {
 
     this.jsonResponseString= j;
     this.evaluateResult();
-    this.showDialog();
+    
     context.event = ev;
     context.result = this;
     console.log(this.response);
@@ -139,11 +140,18 @@ try {
 
     context.error = e;
    analytics.track(context.callsign +  ' Provisioning Error', context);
+    this.dialog = {};
+    this.dialog.push({
+        dialogHeader: "There was a problem completing your request",
+        dialogMessage:  "Sorry, there was a problem creating your account. Please contact our support department.<br/> " + context.supportPhone,
+        buttonLabel : "Contact Support",
+        nextUrl :   context.supportUrl
+    });
 
 } finally {
 
     analytics.track(context.callsign +  ' Provisioning Complete', context);
-
+    this.showDialog();
 }
 //console.log(this);
 
@@ -158,7 +166,7 @@ MVCFE.ProvisioningResult.prototype.evaluateResult = function() {
         nextUrl :   context.supportUrl
     });
 }
-
+this.showDialog();
         };
 
         MVCFE.ProvisioningResult.prototype.showDialog = function() {
