@@ -6,7 +6,7 @@ var context = {
     overlayEnabled : true,
     supportUrl: "http://support.pbs.org",
     supportPhone: "+1 415-942-8804",
-    accentRgb: "",
+    accentRgb: "rgb(244, 88, 27)",
     logoUrl: "https://full-kqed-sandbox.cs2.force.com/donate/resource/1470600684000/KQED_PassportLogo"
 };
 
@@ -101,7 +101,7 @@ MVCFE.Event.prototype.setupEnv = function() {
 MVCFE.Event.prototype.readyDomDialog = function() {
   this.overlay =  document.createElement("div");
   $(this.overlay).attr("id", "passport-loading");
-  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.4);');
+  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5);');
 
   $(this.overlay).detach();
   $("body").prepend(this.overlay);
@@ -183,7 +183,7 @@ this.showDialog();
            .css('z-index',1000);
 
            this.overlayContent   = document.createElement("div");
-           $(this.overlayContent).html("<div><img src='" + context.logoUrl + "' style='max-width:100%; height:auto' /><h3> " + this.dialog.dialogHeader + " </h3><p> " + this.dialog.dialogMessage + " </p> <a class='btn btn-primary' href='" + this.dialog.nextUrl + "' target='_blank'  >" + this.dialog.buttonLabel + "</a></div>");
+           $(this.overlayContent).html("<div><img src='" + context.logoUrl + "' style='max-width:100%; height:auto' /><h3> " + this.dialog.dialogHeader + " </h3><p> " + this.dialog.dialogMessage + " </p> <a style='background:" + context.accentColor + "' class='btn btn-primary' href='" + this.dialog.nextUrl + "' target='_blank'  >" + this.dialog.buttonLabel + "</a></div>");
             $(this.overlayContent)
             .css('display','block')
            .css('position','relative')
