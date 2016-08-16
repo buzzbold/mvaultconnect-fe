@@ -75,9 +75,9 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
         .done(function(json) {
             myResult = new MVCFE.ProvisioningResult(passEvent, json);
         })
-        .fail(function(e, textStatus) {
+        .fail(function(e) {
             context.error = e;
-            myResult = new MVCFE.ProvisioningResult(this, textStatus);
+            myResult = new MVCFE.ProvisioningResult(this, NULL);
         });
     }
 };
