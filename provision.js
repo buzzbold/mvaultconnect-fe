@@ -140,13 +140,13 @@ try {
 
     context.error = e;
    analytics.track(context.callsign +  ' Provisioning Error', context);
-    this.dialog = {};
-    this.dialog.push({
+    
+    this.dialog = {
         dialogHeader: "There was a problem completing your request",
         dialogMessage:  "Sorry, there was a problem creating your account. Please contact our support department.<br/> " + context.supportPhone,
         buttonLabel : "Contact Support",
         nextUrl :   context.supportUrl
-    });
+    };
 
 } finally {
 
@@ -159,13 +159,12 @@ try {
 
 MVCFE.ProvisioningResult.prototype.evaluateResult = function() {
     if (typeof this.response === undefined ) {
-        this.dialog = {};
-       this.dialog.push({
+       this.dialog = {
         dialogHeader: "There was a problem completing your request",
         dialogMessage:  "Sorry, there was a problem creating your account. Please contact our support department.<br/> " + context.supportPhone,
         buttonLabel : "Contact Support",
         nextUrl :   context.supportUrl
-    });
+    };
 }
 this.showDialog();
         };
