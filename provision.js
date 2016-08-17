@@ -149,7 +149,7 @@ try {
 } finally {
 
     analytics.track(context.callsign +  ' Provisioning Complete', context);
-    this.showDialog();
+    new MVCFE.Dialog(this.dialog);
 }
 //console.log(this);
 
@@ -164,7 +164,7 @@ MVCFE.ProvisioningResult.prototype.evaluateResult = function() {
         nextUrl :   context.supportUrl
     };
 }
-this.showDialog();
+new MVCFE.Dialog(this.dialog);
         };
 
 
