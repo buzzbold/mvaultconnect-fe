@@ -1,52 +1,51 @@
 
-var context = {
-    callsign : "KQED",
-    provisioningEndpoint : "https://full-kqed-sandbox.cs2.force.com/donate/services/apexrest/v1.0/provision/",
-    passportEnabled : true,
-    overlayEnabled : true,
-    supportUrl: "http://support.pbs.org",
-    supportPhone: "+1 415-942-8804",
-    accentColor: "rgb(244, 88, 27)",
-    logoUrl: "https://full-kqed-sandbox.cs2.force.com/donate/resource/1470600684000/KQED_PassportLogo"
-};
+
 
 
 var MVCFE = MVCFE || {};
+var MVCFE.debug;
 
 MVCFE.Event = function(data) {
-    console.log('Incoming Data:');
-    console.log(data);
-    
-    this.callbackData = data;
-    
-    this.setupEnv();    
-    this.readyDomDialog();
 
+   MVCFE.debug = MVCFE.debug || false;
+
+
+  if (MVCFE.debug) console.log('Incoming Data:');
+  if (MVCFE.debug) console.log(data);
+
+if (typeof data !== undefined) this.callbackData = data ;
+    this.setupEnv();
+    this.readyDomDialog();
     this.evaluateType();
+
+    if (this.typeName!='unknown') {
     this.createRequest();
     this.processAsyncRequest();
+  } else {
+   new  MVCFE.TransactionFailure(this);
+  }
 };
 
 MVCFE.Event.prototype.evaluateType = function() {
-    this.typeName = "unknown";
-    
-        console.log('Method scope info, evaluateType:');
-    console.log(this);
-    
+    this.typeName = 'unknown';
+
+       if (MVCFE.debug)  console.log('Method scope info, evaluateType:');
+     if (MVCFE.debug)   console.log(this);
+
     try {
         if (typeof this.callbackData !== undefined
             && this.callbackData.__action == 'rC_Connect.Campaign_DesignForm.upsertData')
             this.typeName = "rc_connect";
     } catch (e) {
-        console.log('Exception' + e);
+      if (MVCFE.debug)   console.log('Exception' + e);
     }
-  
+
 };
 
 
 MVCFE.Event.prototype.createRequest = function() {
-     console.log('Method scope info, createRequest:');
-    console.log(this);
+    if (MVCFE.debug)  console.log('Method scope info, createRequest:');
+   if (MVCFE.debug)  console.log(this);
     switch(this.typeName) {
         case 'rc_connect':
 // Overwrite and delete the CC number immediately
@@ -66,7 +65,6 @@ context.error = 'unknown provisioning event';
 MVCFE.Event.prototype.processAsyncRequest = function() {
     var passEvent = this;
     if (true === context.passportEnabled ) {
-
         $.ajax({
             url: context.provisioningEndpoint,
             data: this.provisionRequestParams,
@@ -126,12 +124,12 @@ try {
 
     this.jsonResponseString= j;
     this.evaluateResult();
-    
+
     context.event = ev;
     context.result = this;
-    console.log(this.response);
+  if (MVCFE.debug)   console.log(this.response);
     if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
-      
+
  analytics.track(context.callsign +  ' Provisioning Failed', context);
 
     }
@@ -140,7 +138,7 @@ try {
 
     context.error = e;
    analytics.track(context.callsign +  ' Provisioning Error', context);
-    
+
     this.dialog = {
         dialogHeader: "There was a problem completing your request",
         dialogMessage:  "Sorry, there was a problem creating your account. Please contact our support department.<br/> " + context.supportPhone,
@@ -211,7 +209,7 @@ MVCFE.TransactionFailure = function(ev) {
                      nextUrl: context.supportUrl,
                      buttonLabel: 'Contact Support'
                     };
-    
+
     try {
     this.response = responseObj;
     this.dialog = {};
@@ -223,7 +221,7 @@ MVCFE.TransactionFailure = function(ev) {
     this.showDialog();
     context.event = ev;
     context.result = this;
-    console.log(this.response);
+   if (MVCFE.debug)  console.log(this.response);
     if (typeof this.response!== undefined && this.response.provisionSuccess) {} else {
         analytics.track(context.callsign +  ' Provisioning Failed', context);
 }
