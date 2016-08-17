@@ -16,10 +16,13 @@ MVCFE.DomPreparation = function(context) {
 MVCFE.DomPreparation.prototype.readyDomDialog = function() {
   this.overlay =  document.createElement("div");
   $(this.overlay).attr("id", "passport-loading");
-  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5); background-image: ' + context.backgroundImage +'; background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center; ');
+  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5); ');
+  this.overlayImg =  document.createElement("div");
+  $(this.overlayImg).attr('style', 'position: fixed;left: 0px;top: 0px; width:100%;height:100%; z-index: 998;  background-image: ' + context.backgroundImage +'; background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center; opacity: 0.4');
 
   $(this.overlay).detach();
   $("body").prepend(this.overlay);
+  $(this.overlay).prepend(this.overlayImg);
   $("html, body").animate({
     scrollTop: 0
 }, 600);
