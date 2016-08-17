@@ -5,6 +5,42 @@
 var MVCFE = MVCFE || {};
 var MVCFE.debug;
 
+MVCFE.DomPreparation = function() {
+    this.setupEnv();
+    this.readyDomDialog();
+  }
+
+MVCFE.DomPreparation.prototype.setupEnv = function() {
+
+    if (typeof jquery === 'function') {} else {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
+    }
+    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
+        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
+    }
+};
+
+
+MVCFE.DomPreparation.prototype.readyDomDialog = function() {
+  this.overlay =  document.createElement("div");
+  $(this.overlay).attr("id", "passport-loading");
+  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5);');
+
+  $(this.overlay).detach();
+  $("body").prepend(this.overlay);
+  $("html, body").animate({
+    scrollTop: 0
+}, 600);
+  this.overlay.style.visibility = "visible";
+};
+
+
+
+
 MVCFE.Event = function(data) {
 
    MVCFE.debug = MVCFE.debug || false;
@@ -14,8 +50,7 @@ MVCFE.Event = function(data) {
   if (MVCFE.debug) console.log(data);
 
 if (typeof data !== undefined) this.callbackData = data ;
-    this.setupEnv();
-    this.readyDomDialog();
+
     this.evaluateType();
 
     if (this.typeName!='unknown') {
@@ -81,33 +116,7 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
     }
 };
 
-MVCFE.Event.prototype.setupEnv = function() {
 
-    if (typeof jquery === 'function') {} else {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
-    }
-    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
-        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
-    }
-};
-
-
-MVCFE.Event.prototype.readyDomDialog = function() {
-  this.overlay =  document.createElement("div");
-  $(this.overlay).attr("id", "passport-loading");
-  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5);');
-
-  $(this.overlay).detach();
-  $("body").prepend(this.overlay);
-  $("html, body").animate({
-    scrollTop: 0
-}, 600);
-  this.overlay.style.visibility = "visible";
-};
 
 /* ProvisioningResult is the recipient of the originating
 Event data and related AJAX response data */
