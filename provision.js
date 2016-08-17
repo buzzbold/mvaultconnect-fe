@@ -219,7 +219,7 @@ MVCFE.Dialog = function(dialog, context) {
   MVCFE.Dialog.prototype.show = function() {
             var loading = document.getElementById('passport-loading');
            this.overlayContainer = document.createElement("div");
-            this.overlayContainer.id = "overlayActive";
+            this.overlayContainer.id = "overlay-active";
            $(this.overlayContainer)
            .css('display','block')
            .css('position','fixed')
@@ -281,9 +281,12 @@ MVCFE.DomPreparation.prototype.setupEnv = function() {
 
 function overlayReset() {
    try {
-     var loading = document.getElementById("overlayActive");
+     var l = document.getElementById("passport-loading");
+      var j = document.getElementById("overlay-active");
+       $(l).remove();
+       $(j).remove();
    } catch (ex) {
-    $(loading).remove();
+
    }
 }
 
