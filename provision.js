@@ -216,7 +216,7 @@ MVCFE.Dialog = function(dialog, context) {
 
  this.tryAgain = this.dialog.dialogHeader == 'Transaction Incomplete' ? true : false;
   this.show();
-  spinner.stop();
+
   };
 
   MVCFE.Dialog.prototype.show = function() {
