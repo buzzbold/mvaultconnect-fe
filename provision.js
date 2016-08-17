@@ -6,6 +6,7 @@ var MVCFE = MVCFE || {};
 
 
 MVCFE.DomPreparation = function(context) {
+  overlayReset();
     this.setupEnv();
     this.readyDomDialog();
   };
@@ -15,7 +16,7 @@ MVCFE.DomPreparation = function(context) {
 MVCFE.DomPreparation.prototype.readyDomDialog = function() {
   this.overlay =  document.createElement("div");
   $(this.overlay).attr("id", "passport-loading");
-  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5);');
+  $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5); background-image: ' + context.backgroundImage '; background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center; ');
 
   $(this.overlay).detach();
   $("body").prepend(this.overlay);
@@ -207,6 +208,8 @@ MVCFE.TransactionFailure = function(ev) {
 
 MVCFE.Dialog = function(dialog, context) {
   this.dialog = dialog;
+
+ this.tryAgain = this.dialog.dialogHeader == 'Transaction Incomplete' ? true : false;
   this.show();
   };
 
@@ -224,7 +227,20 @@ MVCFE.Dialog = function(dialog, context) {
            .css('z-index',1000);
 
            this.overlayContent   = document.createElement("div");
-           $(this.overlayContent).html("<div><img src='" + context.logoUrl + "' style='max-width:100%; height:auto' /><h3> " + this.dialog.dialogHeader + " </h3><p> " + this.dialog.dialogMessage + " </p> <a style='background:" + context.accentColor + "; border-color:" + context.accentColor + "' class='btn btn-primary btn-lg' href='" + this.dialog.nextUrl + "' target='_blank'  >" + this.dialog.buttonLabel + "</a></div>");
+
+           if (this.tryAgain) {
+
+
+         this.nextButton = "<div class='btn-group btn-group-lg' role='group'>";
+         this.nextButton += "<a class='btn btn-primary btn-lg' href='#' onclick='overlayReset();' >Try Again</a>";
+        this.nextButton += "<a style='background:" + context.accentColor + "; border-color:" + context.accentColor + "' class='btn btn-primary btn-lg' href='" + context.stationContact + "' target='_blank'  >Contact " + context.callsign + "</a>";
+        this.nextButton += "</div>";
+            }else {
+           this.nextButton = "<a style='background:" + context.accentColor + "; border-color:" + context.accentColor + "' class='btn btn-primary btn-lg' href='" + this.dialog.nextUrl + "' target='_blank'  >" + this.dialog.buttonLabel + "</a>";
+            }
+
+
+           $(this.overlayContent).html("<div><img src='" + context.logoUrl + "' style='max-width:100%; height:auto' /><h3> " + this.dialog.dialogHeader + " </h3><p> " + this.dialog.dialogMessage + " </p> " + this.nextButton + " </div>");
             $(this.overlayContent)
             .css('display','block')
            .css('position','relative')
@@ -259,6 +275,15 @@ MVCFE.DomPreparation.prototype.setupEnv = function() {
     }
 };
 
+function overlayReset() {
+   try {
+     var loading = document.getElementById('passport-loading');
+   } catch () {
+    $(loading).remove();
+   }
+}
+
+
        function winHasJSON(obj) {
         var ret;
         try {
@@ -268,6 +293,7 @@ MVCFE.DomPreparation.prototype.setupEnv = function() {
 }
 return ret;
 }
+
 
 
 
