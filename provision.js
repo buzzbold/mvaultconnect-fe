@@ -214,7 +214,8 @@ MVCFE.TransactionFailure = function(ev) {
 MVCFE.Dialog = function(dialog, context) {
   this.dialog = dialog;
 
- this.tryAgain = this.dialog.dialogHeader == 'Transaction Incomplete' ? true : false;
+ this.tryAgain = this.dialog.dialogHeader == 'Transaction Incomplete' ||
+ this.dialog.dialogHeader == 'Processing Error'  ? true : false;
   this.show();
 
   };
