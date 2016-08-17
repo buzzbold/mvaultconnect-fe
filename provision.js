@@ -1,7 +1,6 @@
 
 
 
-
 var MVCFE = MVCFE || {};
 var spinner;
 
