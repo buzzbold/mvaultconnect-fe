@@ -278,7 +278,7 @@ MVCFE.DomPreparation.prototype.setupEnv = function() {
 function overlayReset() {
    try {
      var loading = document.getElementById('passport-loading');
-   } catch () {
+   } catch (ex) {
     $(loading).remove();
    }
 }
