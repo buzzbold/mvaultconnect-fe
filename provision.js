@@ -28,7 +28,7 @@ MVCFE.DomPreparation.prototype.readyDomDialog = function() {
 }, 600);
   this.overlay.style.visibility = "visible";
 
-var spinner = new Spinner(opts).spin(this.overlay);
+var spinner = new Spinner(spinOpts).spin(this.overlay);
 };
 
 
