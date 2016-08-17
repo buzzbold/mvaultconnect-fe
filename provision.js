@@ -264,7 +264,7 @@ MVCFE.Dialog = function(dialog, context) {
            $(this.overlayContainer).prepend(this.overlayContent);
            $("body").prepend(this.overlayContainer);
            //$(loading).css('display', 'none');
-
+           $('div.spinner[role="progressbar"]').remove();
        };
 
 
@@ -288,6 +288,7 @@ function overlayReset() {
       var j = document.getElementById("overlay-active");
        $(l).remove();
        $(j).remove();
+
    } catch (ex) {
 
    }
