@@ -15,7 +15,7 @@ MVCFE.DomPreparation = function(context) {
 
 MVCFE.DomPreparation.prototype.readyDomDialog = function() {
   this.overlay =  document.createElement("div");
-  $(this.overlay).attr("id", "passport-loading");
+  this.overlay.id =  "passport-loading";
   $(this.overlay).attr('style','visibility: hidden; position: fixed;left: 0px;top: 0px; width:100%;height:100%;text-align:center;z-index: 999; background-color:rgba(0,0,0,0.5); ');
   this.overlayImg =  document.createElement("div");
   $(this.overlayImg).attr('style', 'position: fixed;left: 0px;top: 0px; width:100%;height:100%; z-index: 998;  background-image: ' + context.backgroundImage +'; background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center; opacity: 0.4');
@@ -219,6 +219,7 @@ MVCFE.Dialog = function(dialog, context) {
   MVCFE.Dialog.prototype.show = function() {
             var loading = document.getElementById('passport-loading');
            this.overlayContainer = document.createElement("div");
+            this.overlayContainer.id = "overlayActive";
            $(this.overlayContainer)
            .css('display','block')
            .css('position','fixed')
@@ -280,7 +281,7 @@ MVCFE.DomPreparation.prototype.setupEnv = function() {
 
 function overlayReset() {
    try {
-     var loading = document.getElementById('passport-loading');
+     var loading = document.getElementById("overlayActive");
    } catch (ex) {
     $(loading).remove();
    }
