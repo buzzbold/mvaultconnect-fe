@@ -2,10 +2,11 @@
 
 
 var MVCFE = MVCFE || {};
-var spinner;
+
 
 MVCFE.DomPreparation = function(context) {
-  overlayReset();
+
+    overlayReset();
     this.setupEnv();
     this.readyDomDialog();
   };
@@ -26,8 +27,8 @@ MVCFE.DomPreparation.prototype.readyDomDialog = function() {
     scrollTop: 0
 }, 600);
   this.overlay.style.visibility = "visible";
-
-spinner = new Spinner(spinOpts).spin(this.overlay);
+  this.spinner = new Spinner(spinOpts).spin(this.overlay);
+  return this;
 };
 
 
