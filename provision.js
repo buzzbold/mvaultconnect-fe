@@ -3,7 +3,7 @@
 
 
 var MVCFE = MVCFE || {};
-
+var spinner;
 
 MVCFE.DomPreparation = function(context) {
   overlayReset();
@@ -28,7 +28,7 @@ MVCFE.DomPreparation.prototype.readyDomDialog = function() {
 }, 600);
   this.overlay.style.visibility = "visible";
 
-var spinner = new Spinner(spinOpts).spin(this.overlay);
+spinner = new Spinner(spinOpts).spin(this.overlay);
 };
 
 
@@ -216,6 +216,7 @@ MVCFE.Dialog = function(dialog, context) {
 
  this.tryAgain = this.dialog.dialogHeader == 'Transaction Incomplete' ? true : false;
   this.show();
+  spinner.stop();
   };
 
   MVCFE.Dialog.prototype.show = function() {
