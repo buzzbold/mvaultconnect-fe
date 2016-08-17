@@ -19,7 +19,7 @@ var spinOpts = {
 , radius: 27 // The radius of the inner circle
 , scale: 1.25 // Scales overall size of the spinner
 , corners: 0 // Corner roundness (0..1)
-, color: '#000' // #rgb or #rrggbb or array of colors
+, color: '#f4581b' // #rgb or #rrggbb or array of colors
 , opacity: 0.05 // Opacity of the lines
 , rotate: 59 // The rotation offset
 , direction: 1 // 1: clockwise, -1: counterclockwise
