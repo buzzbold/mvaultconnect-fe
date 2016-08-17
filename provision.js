@@ -5,7 +5,7 @@
 var MVCFE = MVCFE || {};
 
 
-MVCFE.DomPreparation = function() {
+MVCFE.DomPreparation = function(context) {
     this.setupEnv();
     this.readyDomDialog();
   }
@@ -41,7 +41,7 @@ MVCFE.DomPreparation.prototype.readyDomDialog = function() {
 
 
 
-MVCFE.Event = function(data) {
+MVCFE.Event = function(data, context) {
 
    MVCFE.debug = MVCFE.debug || false;
 
@@ -57,7 +57,7 @@ if (typeof data !== undefined) this.callbackData = data ;
     this.createRequest();
     this.processAsyncRequest();
   } else {
-   new  MVCFE.TransactionFailure(this);
+   new  MVCFE.TransactionFailure(this, context);
   }
 };
 
@@ -106,12 +106,12 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
             method: "GET",
         })
         .done(function(json) {
-            myResult = new MVCFE.ProvisioningResult(passEvent, json);
+            myResult = new MVCFE.ProvisioningResult(passEvent, json, context);
         })
         .fail(function(e) {
             context.error = e;
             var na;
-            myResult = new MVCFE.ProvisioningResult(this, na );
+            myResult = new MVCFE.ProvisioningResult(this, na , context);
         });
     }
 };
@@ -121,7 +121,7 @@ MVCFE.Event.prototype.processAsyncRequest = function() {
 /* ProvisioningResult is the recipient of the originating
 Event data and related AJAX response data */
 
-MVCFE.ProvisioningResult = function(ev, j) {
+MVCFE.ProvisioningResult = function(ev, j, context) {
     var trackLabel = context.callsign +  ' Provisioning Complete';
 try {
     this.response = JSON.parse(j);
