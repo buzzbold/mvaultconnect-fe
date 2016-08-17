@@ -3,7 +3,7 @@
 
 
 var MVCFE = MVCFE || {};
-var MVCFE.debug;
+
 
 MVCFE.DomPreparation = function() {
     this.setupEnv();
