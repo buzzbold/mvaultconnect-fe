@@ -11,6 +11,18 @@ MVCFE.DomPreparation = function(context) {
     this.readyDomDialog();
   };
 
+MVCFE.DomPreparation.prototype.setupEnv = function() {
+    if (typeof jquery === 'function') {} else {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
+    }
+    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
+        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
+    }
+};
 
 
 MVCFE.DomPreparation.prototype.readyDomDialog = function() {
@@ -269,19 +281,7 @@ MVCFE.Dialog = function(dialog, context) {
        };
 
 
-MVCFE.DomPreparation.prototype.setupEnv = function() {
 
-    if (typeof jquery === 'function') {} else {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
-    }
-    if (typeof JSON === 'object' && typeof JSON.stringify === 'function') {} else {
-        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js", winHasJSON);
-    }
-};
 
 function overlayReset() {
    try {
